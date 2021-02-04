@@ -1,6 +1,10 @@
-# speech
+# Transcript
+
+This is an EXPERIMENTAL for transcript.
 
 ## Usage
+
+### Stream
 
 ```shell
 $ GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials node ./src/cli.js stream --lang=en-US --lang=ja-JP --translate=ja --output=/path/to/output-file
