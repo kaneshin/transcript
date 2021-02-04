@@ -1,0 +1,26 @@
+{
+  "name": "speech",
+  "version": "0.0.1",
+  "bin": {
+    "speech": "infiniteStreaming.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shintaro Kaneko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kaneshin/speech/issues"
+  },
+  "homepage": "https://github.com/kaneshin/speech#readme",
+  "devDependencies": {
+    "chalk": "^4.1.0",
+    "node-record-lpcm16": "^1.0.1",
+    "stream": "0.0.2",
+    "yargs": "^16.2.0"
+  },
+  "dependencies": {
+    "@google-cloud/speech": "^4.2.0",
+    "@google-cloud/translate": "^6.1.0"
+  }
+}
