@@ -2,12 +2,11 @@ const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
 const stream = require("./commands/stream");
 
+// See: https://cloud.google.com/speech-to-text/docs/reference/rest/v1/RecognitionConfig
 yargs(hideBin(process.argv)).command(
   "stream [OPTION]...",
   "infinite streaming start",
-  // https://cloud.google.com/speech-to-text/docs/reference/rest/v1p1beta1/RecognitionConfig
   yargs => {
-    // https://cloud.google.com/speech-to-text/docs/reference/rest/v1p1beta1/RecognitionConfig#audioencoding
     yargs.positional("encoding", {
       describe: "encoding of audio",
       default: "LINEAR16",

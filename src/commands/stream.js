@@ -3,11 +3,17 @@ const chalk = require("chalk");
 const { Writable } = require("stream");
 const fs = require("fs");
 const recorder = require("node-record-lpcm16");
-const { translate, speech } = require("./../clients");
+const { translate, deepl } = require("./../libs/translate");
+const { speech } = require("./../libs/speech");
 
 module.exports = (encoding, sampleRate, languageCode, target, output) => {
   const streamingLimit = 290000;
-  const tr = translate(target);
+  let hasDeepl = false;
+  const authKey = process.env.DEEPL_AUTH_KEY;
+  if (authKey !== "") {
+    hasDeepl = true;
+  }
+  const tr = hasDeepl ? deepl(authKey, target) : translate(target);
   const sp = speech(encoding, sampleRate, languageCode);
 
   let outputFile = null;
@@ -157,6 +163,7 @@ module.exports = (encoding, sampleRate, languageCode, target, output) => {
   process.stdout.write(chalk.cyan(`  - SampleRate (Hz):  ${sampleRate}\n`));
   process.stdout.write(chalk.cyan(`  - Language Code:    ${languageCode}\n`));
   process.stdout.write(chalk.cyan(`  - Translate Target: ${target}\n`));
+  process.stdout.write(chalk.cyan(`  - Translation:      ${hasDeepl ? "DeepL" : "Google Cloud Translate"}\n`));
   process.stdout.write(chalk.cyan(`${"=".repeat(50)}\n`));
 
   startStream();

@@ -1,20 +1,4 @@
-const { Translate } = require("@google-cloud/translate").v2;
-const Speech = require("@google-cloud/speech").v1p1beta1;
-
-const translate = target => {
-  const client = new Translate();
-
-  const text = async (text = "") => {
-    let [translations] = await client.translate(text, target);
-    return Array.isArray(translations) ? translations : [translations];
-  };
-
-  return {
-    client,
-    target,
-    text,
-  };
-};
+const Speech = require("@google-cloud/speech").v1;
 
 const speech = (encoding, sampleRate, languageCode) => {
   const config = {
@@ -49,6 +33,5 @@ const speech = (encoding, sampleRate, languageCode) => {
 };
 
 module.exports = {
-  translate,
   speech,
 };
