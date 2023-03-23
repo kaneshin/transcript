@@ -5,16 +5,24 @@ const fs = require("fs");
 const recorder = require("node-record-lpcm16");
 const { translate, deepl } = require("./../libs/translate");
 const { speech } = require("./../libs/speech");
+const { chat } = require("./../libs/chat");
 
-module.exports = (encoding, sampleRate, languageCode, target, output) => {
+module.exports = (encoding, sampleRate, languageCode, target, output, openaiModel) => {
   const streamingLimit = 290000;
   let hasDeepl = false;
-  const authKey = process.env.DEEPL_AUTH_KEY;
-  if (authKey !== "") {
+  const deeplAuthKey = process.env.DEEPL_AUTH_KEY;
+  if (deeplAuthKey) {
     hasDeepl = true;
   }
-  const tr = hasDeepl ? deepl(authKey, target) : translate(target);
+  const tr = hasDeepl ? deepl(deeplAuthKey, target) : translate(target);
   const sp = speech(encoding, sampleRate, languageCode);
+
+  let hasOpenAI = false;
+  const openAiApiKey = process.env.OPENAI_API_KEY;
+  if (openAiApiKey) {
+    hasOpenAI = true;
+  }
+  const ch = hasOpenAI ? chat(openAiApiKey, openaiModel) : undefined;
 
   let outputFile = null;
   let translationFile = null;
@@ -65,6 +73,13 @@ module.exports = (encoding, sampleRate, languageCode, target, output) => {
       }
 
       isFinalEndTime = resultEndTime;
+
+      // ChatGPT
+      if (ch) {
+        const contents = await ch.message("user", stdoutText);
+        const content = contents.join("\n");
+        process.stdout.write(chalk.yellow(content));
+      }
     } else {
       // write text to stdout
       process.stdout.write(`${stdoutText}`);

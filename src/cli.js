@@ -27,6 +27,10 @@ yargs(hideBin(process.argv)).command(
       describe: "output filename",
       default: "",
     });
+    yargs.positional("openai-model", {
+      describe: "specify one of models of OpenAI",
+      default: "gpt-3.5-turbo-0301",
+    });
   },
   argv => {
     stream(argv.encoding, argv.sampleRate, argv.lang, argv.translate, argv.output);
